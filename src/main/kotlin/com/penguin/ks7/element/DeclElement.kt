@@ -6,7 +6,7 @@ enum class IOType {
     NONE
 }
 
-class DeclElement(val name: String) : Element {
+class DeclElement(name: String) : StmtElement(name) {
 
     private var ioType: IOType =
         IOType.NONE
@@ -59,6 +59,21 @@ class DeclElement(val name: String) : Element {
 
     fun number(vararg s: String) = addCol(s.toList().map { NumberCol(it) }.toList())
 
+    fun symbol(s: String) = addCol(SymbolCol(s))
+
+    fun symbol(vararg s: String) = addCol(s.toList().map { SymbolCol(it) }.toList())
+
+    private val rules = mutableListOf<RuleElement>()
+
+    fun rule(rule: RuleElement): DeclElement {
+        rules.add(rule)
+        return this
+    }
+
+    fun rules(): String {
+        return if (rules.isEmpty()) "" else rules.joinToString("\n") + "\n"
+    }
+
     private fun options(): String {
         val builder = mutableListOf<String>()
         if (this::filename.isInitialized) {
@@ -82,6 +97,7 @@ class DeclElement(val name: String) : Element {
 
     override fun _2s(): String {
         return ".decl $name(${elems.map { it._2s() }.joinToString()})\n" +
-                expect()
+                rules() +
+                expect() + "\n"
     }
 }

@@ -14,7 +14,7 @@ class DeclElementTest {
             .compress()
         assertEquals(
             resultDecl._2s(),
-            ".decl result(a:number, b:number, c:number)\n" +
+            ".decl result(a: number, b: number, c: number)\n" +
                     ".output result(filename=\"result.csv\", delimiter=\",\", compress=true)"
         )
     }

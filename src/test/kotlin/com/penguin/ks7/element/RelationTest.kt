@@ -3,10 +3,10 @@ package com.penguin.ks7.element
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class DeclElementTest {
+class RelationTest {
     @Test
     fun test() {
-        val resultDecl = DeclElement("result")
+        val resultDecl = Relation("result")
             .number("a", "b", "c")
             .output()
             .fileName("result.csv")

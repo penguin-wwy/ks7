@@ -6,7 +6,7 @@ enum class IOType {
     NONE
 }
 
-class DeclElement(name: String) : StmtElement(name) {
+class Relation(name: String) : StmtElement(name) {
 
     private var ioType: IOType =
         IOType.NONE
@@ -15,42 +15,42 @@ class DeclElement(name: String) : StmtElement(name) {
     private lateinit var delimiterOp: String
     private var compress: Boolean = false
 
-    fun input(): DeclElement {
+    fun input(): Relation {
         ioType = IOType.INPUT
         return this
     }
 
-    fun output(): DeclElement {
+    fun output(): Relation {
         ioType = IOType.OUTPUT
         return this
     }
 
-    fun fileName(s: String): DeclElement {
+    fun fileName(s: String): Relation {
         filename = s
         return this
     }
 
-    fun delimiter(s: String): DeclElement {
+    fun delimiter(s: String): Relation {
         delimiterOp = s
         return this
     }
 
-    fun compress(): DeclElement {
+    fun compress(): Relation {
         compress = true
         return this
     }
 
-    fun addCol(e: Columns): DeclElement {
+    fun addCol(e: Columns): Relation {
         elems.add(e)
         return this
     }
 
-    fun addCol(vararg e: Columns): DeclElement {
+    fun addCol(vararg e: Columns): Relation {
         elems.addAll(e)
         return this
     }
 
-    fun addCol(es: Collection<Columns>): DeclElement {
+    fun addCol(es: Collection<Columns>): Relation {
         elems.addAll(es)
         return this
     }
@@ -63,9 +63,9 @@ class DeclElement(name: String) : StmtElement(name) {
 
     fun symbol(vararg s: String) = addCol(s.toList().map { SymbolCol(it) }.toList())
 
-    private val rules = mutableListOf<RuleElement>()
+    private val rules = mutableListOf<Clauses>()
 
-    fun rule(rule: RuleElement): DeclElement {
+    fun rule(rule: Clauses): Relation {
         rules.add(rule)
         return this
     }

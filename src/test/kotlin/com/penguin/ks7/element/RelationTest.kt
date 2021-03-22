@@ -15,7 +15,7 @@ class RelationTest {
         assertEquals(
             resultDecl._2s(),
             ".decl result(a: number, b: number, c: number)\n" +
-                    ".output result(filename=\"result.csv\", delimiter=\",\", compress=true)"
+                    ".output result(filename=\"result.csv\", delimiter=\",\", compress=true)\n"
         )
     }
 }

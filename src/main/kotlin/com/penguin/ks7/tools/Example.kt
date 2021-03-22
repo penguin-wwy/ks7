@@ -1,8 +1,6 @@
 package com.penguin.ks7.tools
 
-import com.penguin.ks7.element.Relation
-import com.penguin.ks7.element.Clauses
-import com.penguin.ks7.element.ClausesItem
+import com.penguin.ks7.element.*
 import com.penguin.ks7.platform.SouffleStream
 
 object Example {
@@ -19,10 +17,13 @@ object Example {
         edge.finish(ss)
         val path = Relation("path").number("x").number("y").output()
 
-        val baseRule = Clauses(ClausesItem(path, "x", "y"), ClausesItem(edge, "x", "y"))
-        path.rule(baseRule)
-        val driveRule = Clauses(ClausesItem(path, "x", "y"), ClausesItem(path, "x", "z"), ClausesItem(edge, "z", "y"))
-        path.rule(driveRule)
+        val x = Item("x")
+        val y = Item("y")
+        val z = Item("z")
+
+        path.item(x, y) rule edge.item(x, y)
+        path.item(x, y) rule path.item(x, z) and edge.item(z, y)
+
         path.finish(ss)
 
         ss.flush()

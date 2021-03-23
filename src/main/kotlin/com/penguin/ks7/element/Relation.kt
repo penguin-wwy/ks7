@@ -10,10 +10,15 @@ class Relation(name: String) : StmtElement(name) {
 
     private var ioType: IOType =
         IOType.NONE
-    private val elems = mutableListOf<Element>()
+    private val attributes = mutableListOf<Attribute>()
     private lateinit var filename: String
     private lateinit var delimiterOp: String
     private var compress: Boolean = false
+
+    fun attribute(attribute: Attribute): Relation {
+        attributes.add(attribute)
+        return this
+    }
 
     fun input(): Relation {
         ioType = IOType.INPUT
@@ -39,29 +44,6 @@ class Relation(name: String) : StmtElement(name) {
         compress = true
         return this
     }
-
-    fun addCol(e: Columns): Relation {
-        elems.add(e)
-        return this
-    }
-
-    fun addCol(vararg e: Columns): Relation {
-        elems.addAll(e)
-        return this
-    }
-
-    fun addCol(es: Collection<Columns>): Relation {
-        elems.addAll(es)
-        return this
-    }
-
-    fun number(s: String) = addCol(NumberCol(s))
-
-    fun number(vararg s: String) = addCol(s.toList().map { NumberCol(it) }.toList())
-
-    fun symbol(s: String) = addCol(SymbolCol(s))
-
-    fun symbol(vararg s: String) = addCol(s.toList().map { SymbolCol(it) }.toList())
 
     private val rules = mutableListOf<Clauses>()
 
@@ -90,14 +72,14 @@ class Relation(name: String) : StmtElement(name) {
     }
 
     private fun expect() = when (ioType) {
-        IOType.INPUT -> ".input $name${options()}"
-        IOType.OUTPUT -> ".output $name${options()}"
+        IOType.INPUT -> ".input $name${options()}\n"
+        IOType.OUTPUT -> ".output $name${options()}\n"
         else -> ""
     }
 
     override fun _2s(): String {
-        return ".decl $name(${elems.map { it._2s() }.joinToString()})\n" +
+        return ".decl $name(${attributes.map { it._2s() }.joinToString()})\n" +
                 rules() +
-                expect() + "\n"
+                expect()
     }
 }

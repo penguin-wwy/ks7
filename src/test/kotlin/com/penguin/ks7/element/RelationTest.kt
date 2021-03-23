@@ -6,9 +6,8 @@ import org.junit.jupiter.api.Test
 class RelationTest {
     @Test
     fun test() {
-        val resultDecl = Relation("result")
-            .number("a", "b", "c")
-            .output()
+        val resultDecl = Relation("result") number "a" number "b" number "c"
+        resultDecl.output()
             .fileName("result.csv")
             .delimiter(",")
             .compress()
@@ -17,5 +16,11 @@ class RelationTest {
             ".decl result(a: number, b: number, c: number)\n" +
                     ".output result(filename=\"result.csv\", delimiter=\",\", compress=true)\n"
         )
+    }
+
+    @Test
+    fun testNullaries() {
+        val nullAries = Relation("A")
+        assertEquals(nullAries._2s(), ".decl A()\n")
     }
 }

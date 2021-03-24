@@ -15,6 +15,7 @@ class Item(private val name: String) : Element {
 class ClausesItem(val owner: Relation, vararg s: Item) : Element {
     private val items: Array<out Item> = s
     private var negated = false
+    private lateinit var beInstance: Instance
 
     constructor(owner: Relation, vararg s: String) : this(owner, *s.toList().map { Item.create(it) }.toTypedArray())
 
@@ -23,7 +24,16 @@ class ClausesItem(val owner: Relation, vararg s: Item) : Element {
         return this
     }
 
-    override fun _2s() = "${if (negated) "!" else ""}${owner.name}(${items.joinToString()})"
+    fun instantiated(beInstance: Instance): ClausesItem {
+        this.beInstance = beInstance
+        return this
+    }
+
+    private fun instantiated(): String {
+        return if (this::beInstance.isInitialized) beInstance.prefix() else ""
+    }
+
+    override fun _2s() = "${if (negated) "!" else ""}${instantiated()}${owner.name}(${items.joinToString()})"
 
     override fun toString(): String {
         return _2s()

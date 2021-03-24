@@ -52,8 +52,10 @@ class Relation(name: String) : StmtElement(name) {
         return this
     }
 
-    fun rules(): String {
-        return if (rules.isEmpty()) "" else rules.joinToString("\n") + "\n"
+//    fun instantiate():
+
+    private fun rule2s(prefix: String = ""): String {
+        return if (rules.isEmpty()) "" else rules.map { prefix + it._2s() }.joinToString("\n") + "\n"
     }
 
     private fun options(): String {
@@ -71,15 +73,19 @@ class Relation(name: String) : StmtElement(name) {
         return if (builder.isEmpty()) "" else "(${builder.joinToString()})"
     }
 
-    private fun expect() = when (ioType) {
-        IOType.INPUT -> ".input $name${options()}\n"
-        IOType.OUTPUT -> ".output $name${options()}\n"
+    private fun expect(prefix: String = "") = when (ioType) {
+        IOType.INPUT -> "$prefix.input $name${options()}\n"
+        IOType.OUTPUT -> "$prefix.output $name${options()}\n"
         else -> ""
     }
 
     override fun _2s(): String {
-        return ".decl $name(${attributes.map { it._2s() }.joinToString()})\n" +
-                rules() +
-                expect()
+        return _2s("")
+    }
+
+    fun _2s(prefix: String): String {
+        return "$prefix.decl $name(${attributes.map { it._2s() }.joinToString()})\n" +
+                rule2s(prefix) +
+                expect(prefix)
     }
 }

@@ -45,14 +45,16 @@ class Relation(name: String) : StmtElement(name) {
         return this
     }
 
+    fun instantiate(vararg items: Item) : RelationInstance {
+        return RelationInstance(this).addItems(*items)
+    }
+
     private val rules = mutableListOf<Clauses>()
 
     fun rule(rule: Clauses): Relation {
         rules.add(rule)
         return this
     }
-
-//    fun instantiate():
 
     private fun rule2s(prefix: String = ""): String {
         return if (rules.isEmpty()) "" else rules.map { prefix + it._2s() }.joinToString("\n") + "\n"

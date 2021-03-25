@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class RelationTest {
     @Test
-    fun test() {
+    fun testBase() {
         val resultDecl = Relation("result") number "a" number "b" number "c"
         resultDecl.output()
             .fileName("result.csv")
@@ -22,5 +22,13 @@ class RelationTest {
     fun testNullaries() {
         val nullAries = Relation("A")
         assertEquals(nullAries._2s(), ".decl A()\n")
+    }
+
+    @Test
+    fun testInstantiate() {
+        val simple = Relation("a") symbol "s" number "x"
+        assertEquals(
+            simple.instantiate(Item.symbol("B"), Item.integer(1))._2s(),
+            "a(\"B\", 1).\n")
     }
 }

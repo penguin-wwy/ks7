@@ -1,23 +1,23 @@
 package com.penguin.ks7.element
 
-class Item(private val name: String) : Element {
-    override fun _2s() = name
-
-    override fun toString() = _2s()
-
-    companion object {
-        fun create(s: String): Item {
-            return Item(s)
-        }
-    }
-}
+//class Item(private val name: String) : Element {
+//    override fun _2s() = name
+//
+//    override fun toString() = _2s()
+//
+//    companion object {
+//        fun create(s: String): Item {
+//            return Item(s)
+//        }
+//    }
+//}
 
 class ClausesItem(val owner: Relation, vararg s: Item) : Element {
     private val items: Array<out Item> = s
     private var negated = false
     private lateinit var beInstance: Instance
 
-    constructor(owner: Relation, vararg s: String) : this(owner, *s.toList().map { Item.create(it) }.toTypedArray())
+    constructor(owner: Relation, vararg s: String) : this(owner, *s.toList().map { Item.variable(it) }.toTypedArray())
 
     fun negation(): ClausesItem {
         negated = true

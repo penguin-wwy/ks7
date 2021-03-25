@@ -17,9 +17,9 @@ object Example {
         edge.finish(ss)
         val path = Relation("path").number("x").number("y").output()
 
-        val x = Item("x")
-        val y = Item("y")
-        val z = Item("z")
+        val x = Item.variable("x")
+        val y = Item.variable("y")
+        val z = Item.variable("z")
 
         path.item(x, y) rule edge.item(x, y)
         path.item(x, y) rule path.item(x, z) and edge.item(z, y)

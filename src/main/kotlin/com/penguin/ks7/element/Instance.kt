@@ -33,3 +33,7 @@ class CompInstance(val name: String, val comp: Component) : Instance {
 infix fun Component.init(name: String): CompInstance {
     return CompInstance(name, this)
 }
+
+interface Instantiated {
+    fun instantiate(vararg items: Item): Instance
+}

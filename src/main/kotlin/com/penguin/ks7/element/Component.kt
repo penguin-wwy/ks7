@@ -1,10 +1,13 @@
 package com.penguin.ks7.element
 
-class Component(val name: String) : Element {
-    private val relations = mutableListOf<Relation>()
+class Component(val name: String) : Element, ElementGraph {
+    override val elements = mutableListOf<Element>()
     private val namedRelation = mutableMapOf<String, Relation>()
+    private fun addRelDecl(rel: Relation) {
+        namedRelation[rel.name] = register(rel)
+    }
 
-    fun space(defFunc: (Component) -> Unit): Component {
+    fun space(defFunc: Component.() -> Unit): Component {
         defFunc(this)
         return this
     }
@@ -14,9 +17,17 @@ class Component(val name: String) : Element {
     }
 
     infix fun rel(rel: Relation): Relation {
-        namedRelation[rel.name] = rel
-        relations.add(rel)
+        addRelDecl(rel)
         return rel
+    }
+
+    fun instantiate(name: String, vararg items: Item): Instance {
+        return instantiate(use(name), *items)
+    }
+
+    fun instantiate(rel: Relation, vararg items: Item): Instance {
+        val instance = rel.instantiate(*items)
+        return register(instance)
     }
 
     fun use(name: String): Relation {
@@ -24,11 +35,12 @@ class Component(val name: String) : Element {
     }
 
     private fun rel2s(): String {
-        return if (relations.isEmpty()) "" else
-            "\n" + relations.map { it._2s("\t") }.joinToString("\n")
+        val rels = elements.filterIsInstance<Relation>()
+        return if (rels.isEmpty()) "" else
+            "\n" + rels.map { it._2s("\t") }.joinToString("\n")
     }
 
     override fun _2s(): String {
-        return ".comp $name {${rel2s()}}\n"
+        return ".comp $name {\n${joinToString(prefix = "\t")}}\n"
     }
 }

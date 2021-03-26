@@ -50,7 +50,7 @@ fun Relation.item(vararg s: String): ClausesItem {
 
 class Clauses (private val head: ClausesItem) : Element {
     private val body = mutableListOf<Element>()
-    override fun _2s() = "$head :- ${body.joinToString(" ")}."
+    override fun _2s() = "$head :- ${body.joinToString(" ")}.\n"
 
     override fun toString(): String {
         return _2s()

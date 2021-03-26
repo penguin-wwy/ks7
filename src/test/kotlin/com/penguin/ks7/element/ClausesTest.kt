@@ -7,7 +7,12 @@ class ClausesTest {
     @Test
     fun test() {
         val edge = Relation("edge").number("x").number("y").input()
+        assertEquals(edge._2s(), ".decl edge(x: number, y: number)\n" +
+                ".input edge\n")
+
         val path = Relation("path").number("x").number("y").output()
+        assertEquals(path._2s(), ".decl path(x: number, y: number)\n" +
+                ".output path\n")
 
         val baseRule = Clauses(ClausesItem(path, "x", "y")).start(ClausesItem(edge, "x", "y"))
         path.rule(baseRule)
@@ -16,11 +21,9 @@ class ClausesTest {
             .and(ClausesItem(edge, "z", "y"))
         path.rule(driveRule)
 
-        assertEquals(path._2s(),
-        ".decl path(x: number, y: number)\n" +
+        assertEquals(path.rule2s(),
                 "path(x, y) :- edge(x, y).\n" +
-                "path(x, y) :- path(x, z) , edge(z, y).\n" +
-                ".output path\n")
+                "path(x, y) :- path(x, z) , edge(z, y).\n")
 
     }
 
@@ -34,9 +37,10 @@ class ClausesTest {
 
         assertEquals(path._2s(),
             ".decl path(x: number, y: number)\n" +
-                    "path(x, y) :- edge(x, y).\n" +
-                    "path(x, y) :- path(x, z) , edge(z, y).\n" +
                     ".output path\n")
+        assertEquals(path.rule2s(),
+                    "path(x, y) :- edge(x, y).\n" +
+                    "path(x, y) :- path(x, z) , edge(z, y).\n")
     }
 
     @Test
@@ -49,6 +53,6 @@ class ClausesTest {
                 owner.item("person", "building") and
                 heritage.item("building").negation()
         assertEquals(clauses._2s(),
-            "CanRenovate(person, building) :- Owner(person, building) , !Heritage(building).")
+            "CanRenovate(person, building) :- Owner(person, building) , !Heritage(building).\n")
     }
 }

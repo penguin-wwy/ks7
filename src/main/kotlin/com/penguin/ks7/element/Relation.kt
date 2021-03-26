@@ -6,7 +6,7 @@ enum class IOType {
     NONE
 }
 
-class Relation(name: String) : StmtElement(name) {
+class Relation(name: String) : StmtElement(name), Instantiated {
 
     private var ioType: IOType =
         IOType.NONE
@@ -45,7 +45,7 @@ class Relation(name: String) : StmtElement(name) {
         return this
     }
 
-    fun instantiate(vararg items: Item) : RelationInstance {
+    override fun instantiate(vararg items: Item) : RelationInstance {
         return RelationInstance(this).addItems(*items)
     }
 
@@ -56,8 +56,8 @@ class Relation(name: String) : StmtElement(name) {
         return this
     }
 
-    private fun rule2s(prefix: String = ""): String {
-        return if (rules.isEmpty()) "" else rules.map { prefix + it._2s() }.joinToString("\n") + "\n"
+    fun rule2s(prefix: String = ""): String {
+        return if (rules.isEmpty()) "" else rules.map { prefix + it._2s() }.joinToString("")
     }
 
     private fun options(): String {
@@ -87,7 +87,6 @@ class Relation(name: String) : StmtElement(name) {
 
     fun _2s(prefix: String): String {
         return "$prefix.decl $name(${attributes.map { it._2s() }.joinToString()})\n" +
-                rule2s(prefix) +
                 expect(prefix)
     }
 }

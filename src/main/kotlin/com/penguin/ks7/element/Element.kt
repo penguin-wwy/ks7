@@ -8,4 +8,8 @@ interface Element {
     fun finish(ss: SouffleStream) {
         ss.append(this)
     }
+
+    infix fun to(eg: ElementGraph) {
+        eg.register(this)
+    }
 }

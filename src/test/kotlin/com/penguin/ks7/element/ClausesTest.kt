@@ -14,11 +14,11 @@ class ClausesTest {
         assertEquals(path._2s(), ".decl path(x: number, y: number)\n" +
                 ".output path\n")
 
-        val baseRule = Clauses(ClausesItem(path, "x", "y")).start(ClausesItem(edge, "x", "y"))
+        val baseRule = Clauses(SymbolInstance(path, "x", "y")).start(SymbolInstance(edge, "x", "y"))
         path.rule(baseRule)
-        val driveRule = Clauses(ClausesItem(path, "x", "y"))
-            .start(ClausesItem(path, "x", "z"))
-            .and(ClausesItem(edge, "z", "y"))
+        val driveRule = Clauses(SymbolInstance(path, "x", "y"))
+            .start(SymbolInstance(path, "x", "z"))
+            .and(SymbolInstance(edge, "z", "y"))
         path.rule(driveRule)
 
         assertEquals(path.rule2s(),

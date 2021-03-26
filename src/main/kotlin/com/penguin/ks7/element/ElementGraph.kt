@@ -1,7 +1,7 @@
 package com.penguin.ks7.element
 
 interface ElementGraph {
-    val elements: MutableList<Element>
+    val elements: MutableCollection<Element>
 
     fun <T : Element>register(element: T): T {
         elements.add(element)

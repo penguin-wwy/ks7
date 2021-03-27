@@ -1,2 +1,3 @@
 rootProject.name = 'ks7'
+include 'example'
 

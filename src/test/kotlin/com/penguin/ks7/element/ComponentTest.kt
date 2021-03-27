@@ -23,7 +23,7 @@ internal class ComponentTest {
                 "}\n"
         val actStr = Component("MyComponent").space {
             this rel "TheAnswer" number "x"
-            use("TheAnswer").instantiate(Item.integer(33)) to this
+            use("TheAnswer").instantiate(Item.integer(33)) into this
         }._2s()
         assertEquals(expStr, actStr)
     }
@@ -52,10 +52,10 @@ internal class ComponentTest {
                 "\treach(u, v) :- reach(u, x), edge(x, v).\n" +
                 "}\n"
         val actStr = Component("Reachability").space {
-            Relation("edge") number "u" number "v" to this
-            Relation("reach") number "u" number "v" to this
-            use("reach").item("u", "v") rule use("edge").item("u", "v") to this
-            use("reach").item("u", "v") rule use("reach").item("u", "x") and use("edge").item("x", "v") to this
+            Relation("edge") number "u" number "v" into this
+            Relation("reach") number "u" number "v" into this
+            use("reach").item("u", "v") rule use("edge").item("u", "v") into this
+            use("reach").item("u", "v") rule use("reach").item("u", "x") and use("edge").item("x", "v") into this
         }._2s()
         assertEquals(expStr, actStr)
     }
@@ -67,8 +67,8 @@ internal class ComponentTest {
                 "\tTheAnswer(x) :- 42.\n" +
                 "}\n"
         val baseComp = Component("Base").space {
-            Relation("TheAnswer") number "x" to this
-            use("TheAnswer").item("x") rule Item.integer(42) to this
+            Relation("TheAnswer") number "x" into this
+            use("TheAnswer").item("x") rule Item.integer(42) into this
         }
         assertEquals(baseStr, baseComp._2s())
 
@@ -77,8 +77,8 @@ internal class ComponentTest {
                 "\tWhatIsTheAnswer(n) :- TheAnswer(n).\n" +
                 "}\n"
         val childComp = Component("Child").superComponent(baseComp).space {
-            Relation("WhatIsTheAnswer") number "n" to this
-            use("WhatIsTheAnswer").item("n") rule use("TheAnswer").item("n") to this
+            Relation("WhatIsTheAnswer") number "n" into this
+            use("WhatIsTheAnswer").item("n") rule use("TheAnswer").item("n") into this
         }
         assertEquals(childStr, childComp._2s())
     }

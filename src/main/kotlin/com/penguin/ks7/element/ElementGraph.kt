@@ -12,3 +12,8 @@ interface ElementGraph {
         return elements.joinToString(sep + prefix + suffix, prefix = prefix, postfix =  suffix) { it._2s() }
     }
 }
+
+fun <T : ElementGraph> T.space(defFunc: T.() -> Unit): T {
+    defFunc(this)
+    return this
+}

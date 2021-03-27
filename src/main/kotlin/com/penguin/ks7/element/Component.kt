@@ -10,11 +10,6 @@ class Component(name: String) : NamedElement(name), Element, ElementGraph {
         return this
     }
 
-    fun space(defFunc: Component.() -> Unit): Component {
-        defFunc(this)
-        return this
-    }
-
     infix fun rel(name: String): Relation {
         return rel(Relation(name))
     }

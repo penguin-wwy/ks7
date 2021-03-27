@@ -3,7 +3,7 @@ package com.penguin.ks7.element
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class ComponentTest {
+internal class ComponentTest {
     @Test
     fun baseTest() {
         val expStr = ".comp MyComponent {\n" +

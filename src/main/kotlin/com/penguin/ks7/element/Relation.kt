@@ -15,7 +15,7 @@ class Relation(name: String) : NamedElement(name), Instantiated {
     private lateinit var delimiterOp: String
     private var compress: Boolean = false
 
-    fun attribute(attribute: Attribute): Relation {
+    infix fun attribute(attribute: Attribute): Relation {
         attributes.add(attribute)
         return this
     }

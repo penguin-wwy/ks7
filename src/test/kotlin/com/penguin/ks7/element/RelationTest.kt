@@ -3,7 +3,7 @@ package com.penguin.ks7.element
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class RelationTest {
+internal class RelationTest {
     @Test
     fun testBase() {
         val resultDecl = Relation("result") number "a" number "b" number "c"

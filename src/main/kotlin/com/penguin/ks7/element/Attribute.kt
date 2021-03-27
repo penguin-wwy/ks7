@@ -4,6 +4,10 @@ class Attribute(val name: Item, val type: Type) : Element {
     override fun _2s(): String {
         return "$name: ${type.desc()}"
     }
+
+    companion object {
+        fun create(name: String, type: Type)  = Attribute(Item.variable(name), type)
+    }
 }
 
 infix fun Relation.number(item: Item): Relation {

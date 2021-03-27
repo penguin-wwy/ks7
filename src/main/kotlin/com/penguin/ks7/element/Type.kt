@@ -1,5 +1,7 @@
 package com.penguin.ks7.element
 
+import java.lang.AssertionError
+
 interface Type : Element {
     fun desc(): String
     override fun _2s() = desc()
@@ -21,4 +23,58 @@ object UnsignedTy : PrimitiveTy {
 
 object FloatTy : PrimitiveTy {
     override fun desc() = "float"
+}
+
+abstract class NamedType(name: String) : Type, NamedElement(name) {
+    override fun desc() = name
+}
+
+class EquivalenceTy(name: String) : NamedType(name) {
+    private lateinit var otherTy: Type
+
+    constructor(name: String, other: Type) : this(name) {
+        otherTy = other
+    }
+
+    infix fun assign(other: Type): EquivalenceTy {
+        otherTy = other
+        return this
+    }
+
+    override fun desc(): String {
+        return ".type $name = ${otherTy.desc()}\n"
+    }
+}
+
+class BaseTy(name: String) : NamedType(name) {
+    internal lateinit var otherTy: Type
+
+    constructor(name: String, other: Type) : this(name) {
+        otherTy = other
+    }
+
+    infix fun defined(other: Type): BaseTy {
+        otherTy = other
+        return this
+    }
+
+    override fun _2s(): String {
+        return ".type $name <: ${otherTy.desc()}\n"
+    }
+}
+
+class UnionType(name: String) : NamedType(name) {
+    private val unifies = mutableListOf<BaseTy>()
+
+    infix fun union(baseTy: BaseTy): UnionType {
+        if (unifies.isNotEmpty() && unifies.last().otherTy != baseTy.otherTy) {
+            throw TypeConflict("type conflict in union type $name")
+        }
+        unifies.add(baseTy)
+        return this
+    }
+
+    override fun _2s(): String {
+        return ".type $name = ${unifies.joinToString(" | ") { it.name }}\n"
+    }
 }

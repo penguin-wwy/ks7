@@ -9,17 +9,26 @@ kotlin to [souffle](https://github.com/souffle-lang/souffle)
 
 * Type
     * [x] Primitive Types
-    * [ ] Equivalence Types
+    * [x] Equivalence Types
     * [x] Base Types
-    * [ ] Union Types
-    * [ ] Record Types
+    * [x] Union Types
+    * [ ] [Check Base Type](https://souffle-lang.github.io/types#pitfalls)
+    * [ ] [Record Types](https://souffle-lang.github.io/types#record-types)
 
 * Strings
 
 * Arithmetic
 
 * Components
+    * [x] Base
+    * [x] [Inheritance](https://souffle-lang.github.io/components#inheritance)
+    * [ ] [Type-Parametrization](https://souffle-lang.github.io/components#type-parametrization)
+    * [ ] [Overridable-Relations](https://souffle-lang.github.io/components#overridable-relations)
 
 * Clauses
     * [x] Negation
     * [ ] Disjunction
+
+* Aggregates and Generative Functors
+    * [ ] [Aggregates](https://souffle-lang.github.io/aggregates#aggregates)
+    * [ ] [Generative-Functors](https://souffle-lang.github.io/aggregates#generative-functors)

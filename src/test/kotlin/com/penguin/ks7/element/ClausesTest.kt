@@ -3,7 +3,7 @@ package com.penguin.ks7.element
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class ClausesTest {
+internal class ClausesTest {
     @Test
     fun test() {
         val edge = Relation("edge").number("x").number("y").input()

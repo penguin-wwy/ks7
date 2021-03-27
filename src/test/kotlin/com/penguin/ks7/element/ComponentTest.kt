@@ -49,7 +49,7 @@ class ComponentTest {
                 "\t.decl edge(u: number, v: number)\n" +
                 "\t.decl reach(u: number, v: number)\n" +
                 "\treach(u, v) :- edge(u, v).\n" +
-                "\treach(u, v) :- reach(u, x) , edge(x, v).\n" +
+                "\treach(u, v) :- reach(u, x), edge(x, v).\n" +
                 "}\n"
         val actStr = Component("Reachability").space {
             Relation("edge") number "u" number "v" to this
@@ -58,5 +58,28 @@ class ComponentTest {
             use("reach").item("u", "v") rule use("reach").item("u", "x") and use("edge").item("x", "v") to this
         }._2s()
         assertEquals(expStr, actStr)
+    }
+
+    @Test
+    fun superTest() {
+        val baseStr = ".comp Base {\n" +
+                "\t.decl TheAnswer(x: number)\n" +
+                "\tTheAnswer(x) :- 42.\n" +
+                "}\n"
+        val baseComp = Component("Base").space {
+            Relation("TheAnswer") number "x" to this
+            use("TheAnswer").item("x") rule Item.integer(42) to this
+        }
+        assertEquals(baseStr, baseComp._2s())
+
+        val childStr = ".comp Child : Base {\n" +
+                "\t.decl WhatIsTheAnswer(n: number)\n" +
+                "\tWhatIsTheAnswer(n) :- TheAnswer(n).\n" +
+                "}\n"
+        val childComp = Component("Child").superComponent(baseComp).space {
+            Relation("WhatIsTheAnswer") number "n" to this
+            use("WhatIsTheAnswer").item("n") rule use("TheAnswer").item("n") to this
+        }
+        assertEquals(childStr, childComp._2s())
     }
 }

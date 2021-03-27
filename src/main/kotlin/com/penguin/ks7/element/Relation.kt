@@ -6,7 +6,7 @@ enum class IOType {
     NONE
 }
 
-class Relation(name: String) : StmtElement(name), Instantiated {
+class Relation(name: String) : NamedElement(name), Instantiated {
 
     private var ioType: IOType =
         IOType.NONE

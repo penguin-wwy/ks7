@@ -1,8 +1,14 @@
 package com.penguin.ks7.element
 
-class Component(val name: String) : Element, ElementGraph {
+class Component(name: String) : NamedElement(name), Element, ElementGraph {
     override val elements = mutableListOf<Element>()
     private val namedRelation = mutableMapOf<String, Relation>()
+    private lateinit var superComp: Component
+
+    fun superComponent(component: Component): Component {
+        superComp = component
+        return this
+    }
 
     fun space(defFunc: Component.() -> Unit): Component {
         defFunc(this)
@@ -19,7 +25,9 @@ class Component(val name: String) : Element, ElementGraph {
     }
 
     fun use(name: String): Relation {
-        return namedRelation[name] ?: throw AssertionError("No such relation: $name")
+        return namedRelation.getOrElse(name) {
+            superComp.namedRelation[name] ?: throw AssertionError("No such relation: $name")
+        }
     }
 
     override fun <T : Element> register(element: T): T {
@@ -30,7 +38,11 @@ class Component(val name: String) : Element, ElementGraph {
         }
     }
 
+    private fun super2s(): String {
+        return if (this::superComp.isInitialized) ": ${superComp.name} " else ""
+    }
+
     override fun _2s(): String {
-        return ".comp $name {\n${joinToString(prefix = "\t")}}\n"
+        return ".comp $name ${super2s()}{\n${joinToString(prefix = "\t")}}\n"
     }
 }

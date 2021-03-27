@@ -21,9 +21,9 @@ class ClausesTest {
             .and(SymbolInstance(edge, "z", "y"))
         path.rule(driveRule)
 
-        assertEquals(path.rule2s(),
-                "path(x, y) :- edge(x, y).\n" +
-                "path(x, y) :- path(x, z) , edge(z, y).\n")
+        assertEquals("path(x, y) :- edge(x, y).\n" +
+                "path(x, y) :- path(x, z), edge(z, y).\n",
+            path.rule2s())
 
     }
 
@@ -40,7 +40,7 @@ class ClausesTest {
                     ".output path\n")
         assertEquals(path.rule2s(),
                     "path(x, y) :- edge(x, y).\n" +
-                    "path(x, y) :- path(x, z) , edge(z, y).\n")
+                    "path(x, y) :- path(x, z), edge(z, y).\n")
     }
 
     @Test
@@ -53,6 +53,6 @@ class ClausesTest {
                 owner.item("person", "building") and
                 heritage.item("building").negation()
         assertEquals(clauses._2s(),
-            "CanRenovate(person, building) :- Owner(person, building) , !Heritage(building).\n")
+            "CanRenovate(person, building) :- Owner(person, building), !Heritage(building).\n")
     }
 }

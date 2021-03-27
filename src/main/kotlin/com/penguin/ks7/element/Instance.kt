@@ -1,6 +1,6 @@
 package com.penguin.ks7.element
 
-interface Instance : Element {
+interface Instance : Item {
     fun owner(owner: Instance) = this
 
     fun prefix() = ""

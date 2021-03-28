@@ -13,7 +13,8 @@ kotlin to [souffle](https://github.com/souffle-lang/souffle)
     * [x] Base Types
     * [x] Union Types
     * [ ] [Check Base Type](https://souffle-lang.github.io/types#pitfalls)
-    * [ ] [Record Types](https://souffle-lang.github.io/types#record-types)
+    * [x] [Record Types](https://souffle-lang.github.io/types#record-types)
+    * [ ] [ADT](https://souffle-lang.github.io/types#algebraic-data-types-adt)
 
 * Strings
 

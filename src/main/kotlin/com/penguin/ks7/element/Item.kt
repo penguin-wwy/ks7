@@ -40,3 +40,24 @@ class IntItem(val data: Int) : Item {
 
     override fun toString() = _2s()
 }
+
+class ComplexItem private constructor(val items: Array<out Item>) : Item {
+    override fun _2s(): String {
+        return "[" + items.joinToString { it._2s() } + "]"
+    }
+
+    override fun toString() = _2s()
+
+    companion object {
+        fun create(vararg inputs: Item) = ComplexItem(inputs)
+        fun endNil(vararg inputs: Int) = ComplexItem(arrayOf(*inputs.map { IntItem(it) }.toTypedArray(), NilItem))
+    }
+}
+
+object NilItem : Item {
+    override fun _2s(): String {
+        return "nil"
+    }
+
+    override fun toString() = _2s()
+}

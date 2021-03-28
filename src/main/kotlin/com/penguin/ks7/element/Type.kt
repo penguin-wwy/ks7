@@ -1,7 +1,5 @@
 package com.penguin.ks7.element
 
-import java.lang.AssertionError
-
 interface Type : Element {
     fun desc(): String
     override fun _2s() = desc()
@@ -76,5 +74,32 @@ class UnionType(name: String) : NamedType(name) {
 
     override fun _2s(): String {
         return ".type $name = ${unifies.joinToString(" | ") { it.name }}\n"
+    }
+}
+
+class RecordType(name: String) : NamedType(name) {
+    private val values = mutableListOf<Pair<String, Type>>()
+
+    infix fun value(v: Pair<String, Type>): RecordType {
+        values.add(v)
+        return this
+    }
+
+    fun value(n: String, t: Type): RecordType {
+        return value(Pair(n, t))
+    }
+
+    infix fun nested(n: String): RecordType {
+        return value(n, this)
+    }
+
+    private fun value2s(): String {
+        return values.joinToString(",\n\t", "\n\t", "\n") {
+            it.first + " : " + it.second.desc()
+        }
+    }
+
+    override fun _2s(): String {
+        return ".type $name = [${value2s()}]\n"
     }
 }

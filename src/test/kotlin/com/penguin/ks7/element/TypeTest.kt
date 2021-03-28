@@ -56,4 +56,31 @@ internal class TypeTest {
         val data = Relation("Data") attribute c attribute t attribute v
         assertEquals(".decl Data(c: City, t: Town, v: Village)\n", data._2s())
     }
+
+    @Test
+    fun recordTypeTest() {
+        val city = BaseTy("City") defined SymbolTy
+        val town = BaseTy("Town", SymbolTy)
+        val village = BaseTy("Village", SymbolTy)
+        val place = UnionType("Place") union city union town union village
+
+        val connection = RecordType("Connection").value("from", place).value("to", place)
+        assertEquals(".type Connection = [\n" +
+                "\tfrom : Place,\n" +
+                "\tto : Place\n" +
+                "]\n", connection._2s())
+
+        val list = RecordType("List").value("head", NumberTy).nested("tail")
+        assertEquals(".type List = [\n" +
+                "\thead : number,\n" +
+                "\ttail : List\n" +
+                "]\n", list._2s())
+
+        val a = Relation("A") attribute Attribute.create("x", list)
+        assertEquals(".decl A(x: List)\n", a._2s())
+
+        assertEquals("A(nil).\n", a.instantiate(NilItem)._2s())
+        assertEquals("A([1, nil]).\n", a.instantiate(ComplexItem.endNil(1))._2s())
+        assertEquals("A([2, [3, nil]]).\n", a.instantiate(ComplexItem.create(IntItem(2), ComplexItem.endNil(3)))._2s())
+    }
 }

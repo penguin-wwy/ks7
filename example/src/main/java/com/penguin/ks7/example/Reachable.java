@@ -8,6 +8,9 @@ import com.penguin.ks7.based.tools.RelationFactory;
 import com.penguin.ks7.element.Item;
 import com.penguin.ks7.element.VariableItem;
 
+/*
+* .decl Reachable(n: symbol, m: symbol)
+* */
 @Name("Reachable")
 public class Reachable extends RelationBase {
     @Order(0)
@@ -17,6 +20,10 @@ public class Reachable extends RelationBase {
     public String m;
 
 
+    /*
+    * base rule
+    * Reachable(x, y):- Edge(x, y).
+    * */
     @Rule(base = true)
     public void baseRule() {
         VariableItem x = Item.Companion.variable("x");
@@ -25,6 +32,10 @@ public class Reachable extends RelationBase {
         assertTrue(x, y, edge);
     }
 
+    /*
+    * inductive rule
+    * Reachable(x, z):- Reachable(x, y), Edge(y, z).
+    * */
     @Rule
     public void inductiveRule() {
         VariableItem x = Item.Companion.variable("x");

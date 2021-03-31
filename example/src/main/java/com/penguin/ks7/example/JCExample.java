@@ -6,7 +6,7 @@ import com.penguin.ks7.based.GlobalModule;
 public class JCExample {
 
     public static void main(String[] args) {
-        try (FileModule fileModule = new FileModule("/tmp/example.gdl")) {
+        try (FileModule fileModule = new FileModule("/tmp/example.dl")) {
             GlobalModule.INSTANCE.setModule(fileModule);
             fileModule.define(Edge.class);
             fileModule.define(Reachable.class);

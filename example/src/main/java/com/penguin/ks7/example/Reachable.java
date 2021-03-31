@@ -1,5 +1,6 @@
 package com.penguin.ks7.example;
 
+import com.penguin.ks7.annotation.Name;
 import com.penguin.ks7.annotation.Order;
 import com.penguin.ks7.annotation.Rule;
 import com.penguin.ks7.based.RelationBase;
@@ -7,6 +8,7 @@ import com.penguin.ks7.based.tools.RelationFactory;
 import com.penguin.ks7.element.Item;
 import com.penguin.ks7.element.VariableItem;
 
+@Name("Reachable")
 public class Reachable extends RelationBase {
     @Order(0)
     public String n;

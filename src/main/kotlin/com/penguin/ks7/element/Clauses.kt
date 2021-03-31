@@ -12,12 +12,22 @@ class ClausesItem(val body: Item, val op: BuiltinOp) : Item {
     }
 }
 
-class Clauses (private val head: SymbolInstance) : Element {
+class Clauses() : Element {
+    private lateinit var head: SymbolInstance
+    constructor(head: SymbolInstance) : this() {
+        this.head = head
+    }
+
     private val body = mutableListOf<ClausesItem>()
     override fun _2s() = "$head ${body.joinToString("")}.\n"
 
     override fun toString(): String {
         return _2s()
+    }
+
+    fun header(head: SymbolInstance): Clauses {
+        this.head = head
+        return this
     }
     
     fun start(item: Item): Clauses {
@@ -37,6 +47,15 @@ class Clauses (private val head: SymbolInstance) : Element {
     infix fun or(item: SymbolInstance): Clauses {
         body.add(ClausesItem.create(item, BuiltinOp.OR))
         return this
+    }
+
+    fun verify() {
+        if (!this::head.isInitialized) {
+            throw ClausesInvildError("head isInitialized false")
+        }
+        if (body.isEmpty()) {
+            throw ClausesInvildError("Body empty")
+        }
     }
 }
 

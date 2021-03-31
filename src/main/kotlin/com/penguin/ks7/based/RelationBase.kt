@@ -1,9 +1,8 @@
 package com.penguin.ks7.based
 
+import com.penguin.ks7.annotation.Name
 import com.penguin.ks7.based.tools.AttributeFactory
-import com.penguin.ks7.element.Item
-import com.penguin.ks7.element.Relation
-import com.penguin.ks7.element.VariableItem
+import com.penguin.ks7.element.*
 import kotlin.reflect.KClass
 
 abstract class RelationBase {
@@ -37,7 +36,13 @@ abstract class RelationBase {
     }
 
     fun assertTrue(s0: VariableItem, s1: VariableItem, clause: ClausesBase) {
-        // TODO
+        clause.header(SymbolInstance(getRelation()).addItems(s0, s1) as SymbolInstance)
+        clause.verify().link(this)
+        GlobalModule.add(clause)
+    }
+
+    internal fun instantiate(): SymbolInstance {
+        return SymbolInstance(getRelation()).addItems(*inputs.toTypedArray()) as SymbolInstance
     }
 
     internal fun getRelation(): Relation {
@@ -46,9 +51,17 @@ abstract class RelationBase {
 
     companion object {
         internal fun toRelation(rbClass: KClass<out RelationBase>): Relation {
-            val rel = Relation(rbClass.java.name)
+            val rel = Relation(rbClass.java.getAnnotation(Name::class.java)?.value ?: rbClass.java.name)
             AttributeFactory.attributes(rbClass).forEach(rel::attribute)
             return rel
+        }
+
+        fun <T : RelationBase>declString(jClass: Class<T>): String {
+            return GlobalModule.getRelation(jClass.kotlin)._2s()
+        }
+
+        fun <T : RelationBase>instantiateString(obj: T): String {
+            return obj.instantiate()._2s()
         }
     }
 }

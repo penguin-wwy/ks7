@@ -10,6 +10,9 @@ public class JCExample {
             GlobalModule.INSTANCE.setModule(fileModule);
             fileModule.define(Edge.class);
             fileModule.define(Reachable.class);
+            fileModule.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

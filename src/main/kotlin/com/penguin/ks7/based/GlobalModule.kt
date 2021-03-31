@@ -12,4 +12,12 @@ object GlobalModule {
     fun getRelation(kClass: KClass<out RelationBase>): Relation {
         return kStore.getOrPut(kClass) { RelationBase.toRelation(kClass) } as Relation
     }
+
+    fun add(cb: ClausesBase) {
+        module.rule(cb.clausesImpl)
+    }
+
+    fun add(rb: RelationBase) {
+        module.rela(rb.getRelation())
+    }
 }

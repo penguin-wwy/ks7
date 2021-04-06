@@ -61,3 +61,32 @@ object NilItem : Item {
 
     override fun toString() = _2s()
 }
+
+class BinaryOpItem(val left: Item, val right: Item, val op: String) : Item {
+
+    override fun _2s(): String {
+        return "$left $op $right"
+    }
+
+    override fun toString() = _2s()
+}
+
+operator fun Item.plus(other: Item): BinaryOpItem {
+    return BinaryOpItem(this, other, "+")
+}
+
+operator fun Item.minus(other: Item): BinaryOpItem {
+    return BinaryOpItem(this, other, "-")
+}
+
+operator fun Item.times(other: Item): BinaryOpItem {
+    return BinaryOpItem(this, other, "*")
+}
+
+operator fun Item.div(other: Item): BinaryOpItem {
+    return BinaryOpItem(this, other, "/")
+}
+
+operator fun Item.rem(other: Item): BinaryOpItem {
+    return BinaryOpItem(this, other, "%")
+}

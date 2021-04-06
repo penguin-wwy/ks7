@@ -82,4 +82,32 @@ internal class ComponentTest {
         }
         assertEquals(childStr, childComp._2s())
     }
+
+    @Test
+    fun paramTypeTest() {
+        val expStr = ".comp Graph<TNode> {\n" +
+                "\t.decl edge(u: TNode, v: TNode)\n" +
+                "}\n"
+        val tNode = ParameterType("TNode")
+        val graph = Component("Graph").paramTy(tNode).space {
+            val u = Attribute.create("u", tNode)
+            val v = Attribute.create("v", tNode)
+            Relation("edge") attribute u attribute v into this
+        }
+        assertEquals(expStr, graph._2s())
+    }
+
+    @Test
+    fun paramTypeTest2() {
+        val expStr = ".comp Reachability<TGraph> {\n" +
+                "\t.init graph = TGraph\n" +
+                "\treach(u, v) :- graph.edge(u, v).\n" +
+                "}\t"
+        val tGraph = ParameterType("TGraph")
+        val reachability = Component("Reachability").paramTy(tGraph).space {
+            GenericInstance("graph", tGraph) into this
+        }
+        // TODO
+//        assertEquals(expStr, reachability._2s())
+    }
 }

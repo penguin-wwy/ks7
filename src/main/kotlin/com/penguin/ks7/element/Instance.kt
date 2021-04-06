@@ -94,3 +94,9 @@ infix fun Component.init(name: String): CompInstance {
 interface Instantiated {
     fun instantiate(vararg items: Item): Instance
 }
+
+class GenericInstance<T : NamedType>(val name: String, val ty: T) : Instance {
+    override fun _2s(): String {
+        return ".init $name = ${ty.desc()}\n"
+    }
+}

@@ -103,3 +103,5 @@ class RecordType(name: String) : NamedType(name) {
         return ".type $name = [${value2s()}]\n"
     }
 }
+
+class ParameterType(name: String) : NamedType(name)

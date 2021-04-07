@@ -102,12 +102,15 @@ internal class ComponentTest {
         val expStr = ".comp Reachability<TGraph> {\n" +
                 "\t.init graph = TGraph\n" +
                 "\treach(u, v) :- graph.edge(u, v).\n" +
-                "}\t"
+                "}\n"
         val tGraph = ParameterType("TGraph")
+        val reach = Relation("reach") number "u" number "v"
         val reachability = Component("Reachability").paramTy(tGraph).space {
-            GenericInstance("graph", tGraph) into this
+            val graph = GenericInstance("graph", tGraph) into this
+            val u = Item.variable("u")
+            val v = Item.variable("v")
+            reach.item(u, v) rule graph.use("edge", u, v) into this
         }
-        // TODO
-//        assertEquals(expStr, reachability._2s())
+        assertEquals(expStr, reachability._2s())
     }
 }

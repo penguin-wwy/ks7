@@ -95,7 +95,39 @@ interface Instantiated {
     fun instantiate(vararg items: Item): Instance
 }
 
+class TempInstance(val name: String) : Instance {
+    private lateinit var beInstance: Instance
+    val items = mutableListOf<Item>()
+
+    fun addItems(vararg its: Item): TempInstance {
+        items.addAll(its)
+        return this
+    }
+
+    override fun owner(owner: Instance): TempInstance {
+        beInstance = owner
+        return this
+    }
+
+    private fun owner(): String {
+        return if (this::beInstance.isInitialized) beInstance.prefix() else ""
+    }
+
+    override fun _2s(): String {
+        return "${owner()}${name}(${items.joinToString()})"
+    }
+}
+
 class GenericInstance<T : NamedType>(val name: String, val ty: T) : Instance {
+
+    override fun prefix(): String {
+        return "$name."
+    }
+
+    fun use(name: String, vararg args: Item): TempInstance {
+        return TempInstance(name).owner(this).addItems(*args)
+    }
+
     override fun _2s(): String {
         return ".init $name = ${ty.desc()}\n"
     }
